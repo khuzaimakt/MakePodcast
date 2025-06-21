@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  podcast-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./podcast_output:/app/podcast_output
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - HOST=0.0.0.0
+      - PORT=7860
+    restart: unless-stopped
+    # Allocate more resources for TTS processing
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
